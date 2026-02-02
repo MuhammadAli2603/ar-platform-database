@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Test</title>
+</head>
+<body>
+    <h1>Testing Supabase API Connection</h1>
+    <button onclick="testAPI()">Test API</button>
+    <pre id="result"></pre>
+
+    <script>
+        const SUPABASE_URL = 'https://kqhhvhrwfaygklrvwiul.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtxaGh2aHJ3ZmF5Z2tscnZ3aXVsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk5NTMyMzMsImV4cCI6MjA4NTUyOTIzM30.EybsDJxTf668vX7dhFESm6YyaWnMMAqu-bsiw7aTpXs';
+
+        async function testAPI() {
+            const result = document.getElementById('result');
+            result.textContent = 'Testing...\n\n';
+
+            try {
+                // Test 1: Fetch model data
+                result.textContent += '1. Testing API call to fetch DUCK_001...\n';
+                const response = await fetch(
+                    `${SUPABASE_URL}/rest/v1/models?model_id=eq.DUCK_001&select=*`,
+                    {
+                        headers: {
+                            'apikey': SUPABASE_ANON_KEY,
+                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                            'Content-Type': 'application/json'
+                        }
+                    }
+                );
+
+                result.textContent += `   Response status: ${response.status}\n`;
+
+                const data = await response.json();
+                result.textContent += `   Data received: ${JSON.stringify(data, null, 2)}\n\n`;
+
+                if (data && data.length > 0) {
+                    const model = data[0];
+                    result.textContent += '2. Testing model URL access...\n';
+                    result.textContent += `   Model URL: ${model.public_url}\n\n`;
+
+                    result.textContent += '✅ API Test Successful!\n';
+                    result.textContent += `   Model: ${model.product_name}\n`;
+                    result.textContent += `   Category: ${model.category}\n`;
+                    result.textContent += `   Price: ${model.price}\n`;
+                } else {
+                    result.textContent += '❌ No model data found\n';
+                }
+
+            } catch (error) {
+                result.textContent += `\n❌ Error: ${error.message}\n`;
+                console.error('API Test Error:', error);
+            }
+        }
+
+        // Auto-run test on page load
+        window.onload = testAPI;
+    </script>
+</body>
+</html>

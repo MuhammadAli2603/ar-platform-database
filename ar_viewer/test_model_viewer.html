@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Model Viewer Test</title>
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.3.0/model-viewer.min.js"></script>
+    <style>
+        model-viewer {
+            width: 100vw;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Direct Model Viewer Test</h1>
+    <p id="status">Loading...</p>
+
+    <model-viewer
+        id="viewer"
+        src="https://kqhhvhrwfaygklrvwiul.supabase.co/storage/v1/object/public/ar-models/toys/duck.glb"
+        alt="Duck Model"
+        camera-controls
+        auto-rotate>
+    </model-viewer>
+
+    <script>
+        const viewer = document.getElementById('viewer');
+        const status = document.getElementById('status');
+
+        viewer.addEventListener('load', () => {
+            console.log('✅ Model loaded successfully!');
+            status.textContent = '✅ Model loaded successfully!';
+            status.style.color = 'green';
+        });
+
+        viewer.addEventListener('error', (event) => {
+            console.error('❌ Model load error:', event);
+            status.textContent = '❌ Model failed to load: ' + event.detail;
+            status.style.color = 'red';
+        });
+
+        viewer.addEventListener('progress', (event) => {
+            const progress = event.detail.totalProgress * 100;
+            console.log(`Loading: ${progress.toFixed(0)}%`);
+            status.textContent = `Loading: ${progress.toFixed(0)}%`;
+        });
+
+        // Debug
+        setTimeout(() => {
+            if (status.textContent.includes('Loading')) {
+                console.warn('⚠️ Model still loading after 5 seconds');
+                console.log('Viewer src:', viewer.src);
+                console.log('Viewer modelIsVisible:', viewer.modelIsVisible);
+            }
+        }, 5000);
+    </script>
+</body>
+</html>

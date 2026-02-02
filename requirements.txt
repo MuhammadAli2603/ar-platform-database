@@ -1,0 +1,18 @@
+# Core dependencies
+supabase>=2.0.0
+python-dotenv>=1.0.0
+
+# QR Code generation
+qrcode[pil]>=7.4.2
+Pillow>=10.3.0
+
+# CLI & Progress bars
+tqdm>=4.66.0
+
+# Testing
+pytest>=8.0.0
+pytest-cov>=4.1.0
+
+# Code quality
+pylint>=3.0.0
+mypy>=1.8.0

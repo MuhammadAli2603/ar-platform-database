@@ -1,0 +1,72 @@
+[
+  {
+    "filename": "burger_classic.glb",
+    "model_id": "BURGER_001",
+    "product_name": "Classic Beef Burger",
+    "category": "food",
+    "subcategory": "burger",
+    "price": 8.99,
+    "currency": "USD",
+    "description": "Juicy beef patty with fresh lettuce, tomatoes, pickles, and our secret sauce on a toasted bun",
+    "client_id": "TEST_CLIENT",
+    "polygon_count": 15000,
+    "texture_resolution": "2048x2048",
+    "tags": ["burger", "beef", "american", "fast-food"]
+  },
+  {
+    "filename": "pizza_margherita.glb",
+    "model_id": "PIZZA_001",
+    "product_name": "Margherita Pizza",
+    "category": "food",
+    "subcategory": "pizza",
+    "price": 12.99,
+    "currency": "USD",
+    "description": "Traditional Italian pizza with tomato sauce, fresh mozzarella, basil, and olive oil",
+    "client_id": "TEST_CLIENT",
+    "polygon_count": 20000,
+    "texture_resolution": "2048x2048",
+    "tags": ["pizza", "italian", "vegetarian"]
+  },
+  {
+    "filename": "coffee_latte.glb",
+    "model_id": "COFFEE_001",
+    "product_name": "Caffe Latte",
+    "category": "beverages",
+    "subcategory": "coffee",
+    "price": 4.50,
+    "currency": "USD",
+    "description": "Smooth espresso with steamed milk and a thin layer of foam, topped with latte art",
+    "client_id": "TEST_CLIENT",
+    "polygon_count": 8000,
+    "texture_resolution": "1024x1024",
+    "tags": ["coffee", "latte", "hot-beverage"]
+  },
+  {
+    "filename": "cake_chocolate.glb",
+    "model_id": "CAKE_001",
+    "product_name": "Chocolate Fudge Cake",
+    "category": "desserts",
+    "subcategory": "cake",
+    "price": 6.99,
+    "currency": "USD",
+    "description": "Rich chocolate cake with creamy fudge frosting and chocolate shavings",
+    "client_id": "TEST_CLIENT",
+    "polygon_count": 12000,
+    "texture_resolution": "2048x2048",
+    "tags": ["cake", "chocolate", "dessert", "sweet"]
+  },
+  {
+    "filename": "salad_caesar.glb",
+    "model_id": "SALAD_001",
+    "product_name": "Caesar Salad",
+    "category": "food",
+    "subcategory": "salad",
+    "price": 9.99,
+    "currency": "USD",
+    "description": "Crisp romaine lettuce with Caesar dressing, parmesan cheese, and crunchy croutons",
+    "client_id": "TEST_CLIENT",
+    "polygon_count": 18000,
+    "texture_resolution": "2048x2048",
+    "tags": ["salad", "healthy", "vegetarian", "caesar"]
+  }
+]
