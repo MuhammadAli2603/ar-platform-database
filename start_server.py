@@ -15,7 +15,7 @@ import os
 from pathlib import Path
 
 # Configuration
-PORT = 8000
+PORT = int(os.environ.get("PORT", 7860))
 DIRECTORY = Path(__file__).parent
 
 class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
@@ -50,6 +50,7 @@ def main():
         print("\nExample URLs:")
         print(f"  - http://localhost:{PORT}/ar_viewer/?model=BURGER_001")
         print(f"  - http://localhost:{PORT}/ar_viewer/?model=PIZZA_001")
+        print(f"\n(Port read from PORT env var, defaulting to {PORT})")
         print("\nIMPORTANT:")
         print("  1. Update Supabase credentials in ar_viewer/fetch_models.js")
         print("  2. Upload models first using scripts/upload_model.py")

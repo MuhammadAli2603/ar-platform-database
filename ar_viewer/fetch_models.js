@@ -11,8 +11,8 @@
 
 // Supabase Configuration
 // These should match the values in your .env file
-const SUPABASE_URL = 'https://kqhhvhrwfaygklrvwiul.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtxaGh2aHJ3ZmF5Z2tscnZ3aXVsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk5NTMyMzMsImV4cCI6MjA4NTUyOTIzM30.EybsDJxTf668vX7dhFESm6YyaWnMMAqu-bsiw7aTpXs';
+const SUPABASE_URL = window._env?.SUPABASE_URL || 'https://kqhhvhrwfaygklrvwiul.supabase.co';
+const SUPABASE_ANON_KEY = window._env?.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtxaGh2aHJ3ZmF5Z2tscnZ3aXVsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk5NTMyMzMsImV4cCI6MjA4NTUyOTIzM30.EybsDJxTf668vX7dhFESm6YyaWnMMAqu-bsiw7aTpXs';
 
 // DOM Elements
 const modelViewer = document.getElementById('modelViewer');
@@ -111,8 +111,13 @@ async function loadModel(modelId) {
 function displayModel(model) {
     console.log('Displaying model:', model.model_id);
 
-    // Set model source
+    // Set model source (GLB for all platforms)
     modelViewer.src = model.public_url;
+
+    // Set iOS source: point to USDZ version at the same path.
+    // If the USDZ file doesn't exist, model-viewer falls back to GLB automatically.
+    const usdzUrl = model.public_url.replace(/\.glb$/i, '.usdz');
+    modelViewer.setAttribute('ios-src', usdzUrl);
 
     // Update page title
     document.title = `${model.product_name} - AR View`;
@@ -150,6 +155,14 @@ modelViewer.addEventListener('load', () => {
     console.log('Model loaded successfully');
     loading.classList.add('hidden');
     modelViewer.classList.remove('hidden');
+
+    // Check AR support after model is loaded.
+    // model-viewer exposes canActivateAR once the element is ready.
+    // On desktop (no WebXR + no Scene Viewer + no Quick Look) show fallback.
+    if (modelViewer.canActivateAR === false) {
+        document.getElementById('arNotSupported').classList.remove('hidden');
+        console.log('AR not supported on this device');
+    }
 });
 
 // Handle model load errors
@@ -158,16 +171,26 @@ modelViewer.addEventListener('error', (event) => {
     showError('Failed to load 3D model. The file may be corrupted or unavailable.');
 });
 
-// Track when user enters AR mode
+// Track when user enters/exits AR mode
 modelViewer.addEventListener('ar-status', (event) => {
     console.log('AR status:', event.detail.status);
+    const arPrompt = document.getElementById('arPrompt');
 
     if (event.detail.status === 'session-started') {
         console.log('User entered AR mode');
+
+        // Show placement hint, then auto-dismiss after animation
+        arPrompt.classList.remove('hidden');
+        setTimeout(() => arPrompt.classList.add('hidden'), 4000);
+
         const modelId = urlParams.get('model');
         if (modelId) {
             trackAnalytics(modelId, 'ar_activated');
         }
+    }
+
+    if (event.detail.status === 'session-ended') {
+        arPrompt.classList.add('hidden');
     }
 });
 
@@ -296,16 +319,3 @@ function copyToClipboard() {
     }
 }
 
-// ============================================================
-// Debug Information (Development Only)
-// ============================================================
-
-console.log('='.repeat(60));
-console.log('AR VIEWER DEBUG INFO');
-console.log('='.repeat(60));
-console.log('URL:', window.location.href);
-console.log('Model ID:', modelId);
-console.log('User Agent:', navigator.userAgent);
-console.log('Device Type:', /Mobile|Android|iPhone|iPad/.test(navigator.userAgent) ? 'mobile' : 'desktop');
-console.log('AR Supported:', 'xr' in navigator ? 'Yes' : 'No');
-console.log('='.repeat(60));
